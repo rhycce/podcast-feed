@@ -102,6 +102,14 @@ function addChannelDescriptors(channel: XMLBuilder, yamlContent: Document.Parsed
 
     }
 }
+/**
+function addChannelItemDescriptors(channel: XMLBuilder, yamlContent: Document.Parsed<ParsedNode, true>){
+    const fieldName:string = 'item'
+    const index = 0;
+   // while(yamlContent.hasIn(fieldName, index)){
+    //    const field = yamlContent.getIn('item')
+   // }
+}**/
 
 function isString(value: unknown): value is string {
     return typeof value === 'string';
