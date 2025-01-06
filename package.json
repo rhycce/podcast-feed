@@ -1,0 +1,29 @@
+{
+  "name": "podcast-feed",
+  "version": "0.1.0",
+  "private": "false",
+  "scripts": {
+    "build": "concurrently 'yarn:build:cjs' 'yarn:build:es' 'yarn:build:types'",
+    "build:cjs": "tsc -p tsconfig.cjs.json",
+    "build:es": "tsc -p tsconfig.es.json",
+    "build:types": "tsc -p tsconfig.types.json",
+    "codecheck": "concurrently 'yarn:check-prettier' 'yarn:typecheck'",
+    "check-prettier": "yarn prettier -c src",
+    "fix-prettier": "yarn prettier -c src --write",
+    "test": "jest",
+    "typecheck": "tsc --noEmit && yarn tsc --noEmit -p tsconfig.json",
+    "verify": "yarn && yarn build && yarn typecheck && yarn check-prettier && jest"
+  },
+  "dependencies": {
+    "xmlbuilder2": "^3.1.1",
+    "yaml": "^2.7.0"
+  },
+  "devDependencies": {
+    "@types/node": "^20",
+    "typescript": "^5.5.4",
+    "@tsconfig/node20": "^20.1.4"
+  },
+  "engines": {
+    "node": ">=20.0.0"
+  }
+}

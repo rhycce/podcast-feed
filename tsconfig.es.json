@@ -1,0 +1,8 @@
+{
+  "extends": "./tsconfig.server",
+  "compilerOptions": {
+    "module": "esnext",
+    "moduleResolution": "node",
+    "outDir": "dist-es"
+  }
+}

@@ -1,0 +1,7 @@
+{
+  "extends": "./tsconfig.server",
+  "compilerOptions": {
+    "module": "Node16",
+    "outDir": "dist-cjs"
+  }
+}
