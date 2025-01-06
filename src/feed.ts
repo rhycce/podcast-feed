@@ -7,7 +7,10 @@ import {Document, ParsedNode} from "yaml";
 const yamlFile = './resources/feed.yaml'
 const xmlFile = './resources/feed.xml'
 
-const ChannelFields = [
+const ChannelFields:{
+    ymlField: string,
+    xmlField: string
+}[] = [
     {
         ymlField: 'title',
         xmlField: 'title'
@@ -35,6 +38,14 @@ const ChannelFields = [
     {
         ymlField: 'image',
         xmlField: 'itunes:image'
+    },
+    {
+        ymlField: 'category',
+        xmlField: 'itunes:category'
+    },
+    {
+        ymlField: 'link',
+        xmlField: 'link'
     }
 ]
 function createFeed(){
@@ -72,8 +83,23 @@ function buildChannelAttributes(rss: XMLBuilder){
 function addChannelDescriptors(channel: XMLBuilder, yamlContent: Document.Parsed<ParsedNode, true>){
     for (const channelField of ChannelFields) {
         const field = yamlContent.get(channelField.ymlField);
-        if(isString(field) )
-            channel.ele(channelField.xmlField).txt(<string>field)
+        if(isString(field) ){
+            if(channelField.ymlField === 'image'){
+                const link = yamlContent.get('link')
+                if(isString(link)){
+                    channel.ele(channelField.xmlField, {
+                        'href': `${<string>link}${<string>field}`
+                    })
+                }
+
+            } else if(channelField.ymlField === 'category'){
+                channel.ele(channelField.xmlField, {
+                    'text': `${<string>field}`
+                })
+            }else
+                channel.ele(channelField.xmlField).txt(<string>field)
+        }
+
     }
 }
 
