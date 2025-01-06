@@ -2,9 +2,41 @@ import {create} from 'xmlbuilder2'
 import {XMLBuilder} from "xmlbuilder2/lib/interfaces";
 import {getYamlFileContents} from "./yamlHandler";
 import {writeXmlToFile} from "./xmlHandler";
+import {Document, ParsedNode} from "yaml";
 
 const yamlFile = './resources/feed.yaml'
 const xmlFile = './resources/feed.xml'
+
+const ChannelFields = [
+    {
+        ymlField: 'title',
+        xmlField: 'title'
+    },
+    {
+        ymlField: 'language',
+        xmlField: 'language'
+    },
+    {
+        ymlField: 'format',
+        xmlField: 'format'
+    },
+    {
+        ymlField: 'subtitle',
+        xmlField: 'subtitle'
+    },
+    {
+        ymlField: 'author',
+        xmlField: 'itunes:author'
+    },
+    {
+        ymlField: 'description',
+        xmlField: 'description'
+    },
+    {
+        ymlField: 'image',
+        xmlField: 'itunes:image'
+    }
+]
 function createFeed(){
     const root = buildRootObject();
     const rss = buildRssObject(root)
@@ -33,11 +65,16 @@ function buildRssObject(root: XMLBuilder){
 function buildChannelAttributes(rss: XMLBuilder){
     const yamlContent = getYamlFileContents(yamlFile)
     const channel = rss.ele('channel')
-
-    const title = yamlContent.get('title');
-    if(isString(title) )
-        channel.ele('title').txt(<string>yamlContent.get('title'))
+    addChannelDescriptors(channel, yamlContent)
     return channel
+}
+
+function addChannelDescriptors(channel: XMLBuilder, yamlContent: Document.Parsed<ParsedNode, true>){
+    for (const channelField of ChannelFields) {
+        const field = yamlContent.get(channelField.ymlField);
+        if(isString(field) )
+            channel.ele(channelField.xmlField).txt(<string>field)
+    }
 }
 
 function isString(value: unknown): value is string {
