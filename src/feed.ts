@@ -2,7 +2,7 @@ import {create} from 'xmlbuilder2'
 import {XMLBuilder} from "xmlbuilder2/lib/interfaces";
 import {getYamlFileContents} from "./yamlHandler";
 import {writeXmlToFile} from "./xmlHandler";
-import {Document, ParsedNode} from "yaml";
+import {Document} from "yaml";
 
 const yamlFile = './resources/feed.yaml'
 const xmlFile = './resources/feed.xml'
