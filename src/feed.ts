@@ -48,6 +48,42 @@ const ChannelFields:{
         xmlField: 'link'
     }
 ]
+
+interface ItemDescription {
+    title: string
+    description: string
+    published: string
+    file: string
+    duration: string
+    length: string
+}
+
+const ChannelItemFields:{
+    ymlField: string,
+    xmlField: string
+}[] = [
+    {
+        ymlField: 'title',
+        xmlField: 'title'
+    },
+    {
+        ymlField: 'duration',
+        xmlField: 'itunes:duration'
+    },
+    {
+        ymlField: 'published',
+        xmlField: 'pubDate'
+    },
+    {
+        ymlField: 'author',
+        xmlField: 'itunes:author'
+    },
+    {
+        ymlField: 'description',
+        xmlField: 'description'
+    }
+]
+
 function createFeed(){
     const root = buildRootObject();
     const rss = buildRssObject(root)
@@ -77,10 +113,11 @@ function buildChannelAttributes(rss: XMLBuilder){
     const yamlContent = getYamlFileContents(yamlFile)
     const channel = rss.ele('channel')
     addChannelDescriptors(channel, yamlContent)
+    addChannelItemDescriptors(channel, yamlContent)
     return channel
 }
 
-function addChannelDescriptors(channel: XMLBuilder, yamlContent: Document.Parsed<ParsedNode, true>){
+function addChannelDescriptors(channel: XMLBuilder, yamlContent: Document.Parsed){
     for (const channelField of ChannelFields) {
         const field = yamlContent.get(channelField.ymlField);
         if(isString(field) ){
@@ -102,14 +139,28 @@ function addChannelDescriptors(channel: XMLBuilder, yamlContent: Document.Parsed
 
     }
 }
-/**
-function addChannelItemDescriptors(channel: XMLBuilder, yamlContent: Document.Parsed<ParsedNode, true>){
+
+function addChannelItemDescriptors(channel: XMLBuilder, yamlContent: Document.Parsed){
     const fieldName:string = 'item'
-    const index = 0;
-   // while(yamlContent.hasIn(fieldName, index)){
-    //    const field = yamlContent.getIn('item')
-   // }
-}**/
+    let index = 0;
+    while(yamlContent.hasIn([fieldName, index])){
+        // @ts-ignore
+        const item:Document.Parsed = yamlContent.getIn([fieldName, index])
+        const itemXml = channel.ele(fieldName)
+        for(const itemField of ChannelItemFields){
+            const value = item.get(itemField.ymlField)
+            itemXml.ele(itemField.xmlField).txt(<string>value)
+        }
+        const length = item.get('length')
+        const file = item.get('file')
+        if(isString(length) && isString(file) )
+        itemXml.ele('enclosure', {
+            'length': length.replace(',', ''),
+            'url': file
+        })
+        index++;
+    }
+}
 
 function isString(value: unknown): value is string {
     return typeof value === 'string';
