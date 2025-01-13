@@ -24,9 +24,11 @@ jobs:
       - name: Build
         run: yarn build
       - name: Check formatting
-        run: yarn prettier -c src
+        run: yarn check-prettier
+      - name: Copy resource files over
+        run: cp src/resources/feed.yaml dist/resources
       - name: Run Feed Generator
-        run: node dist-cjs/feed
+        run: node dist/feed
       - name: Push Repo
         run: |
           git config user.name github-actions

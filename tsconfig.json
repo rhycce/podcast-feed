@@ -3,7 +3,9 @@
   "compilerOptions": {
     "importHelpers": true,
     "incremental": true,
-    "rootDir": "src",
-    "allowSyntheticDefaultImports": true
-  }
+    "outDir": "dist",
+    "resolveJsonModule": true,
+    "sourceMap": true
+  },
+  "exclude": ["**/*.test.ts"]
 }
