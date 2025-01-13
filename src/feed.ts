@@ -49,15 +49,6 @@ const ChannelFields:{
     }
 ]
 
-interface ItemDescription {
-    title: string
-    description: string
-    published: string
-    file: string
-    duration: string
-    length: string
-}
-
 const ChannelItemFields:{
     ymlField: string,
     xmlField: string
