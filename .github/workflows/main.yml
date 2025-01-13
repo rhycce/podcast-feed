@@ -26,7 +26,7 @@ jobs:
       - name: Check formatting
         run: yarn prettier -c src
       - name: Run Feed Generator
-        run: node feed
+        run: node dist-cjs/feed
       - name: Push Repo
         run: |
           git config user.name github-actions
