@@ -4,9 +4,6 @@ import { getYamlFileContents } from './yamlHandler'
 import { writeXmlToFile } from './xmlHandler'
 import { Document } from 'yaml'
 
-const yamlFile = './resources/feed.yaml'
-const xmlFile = './resources/feed.xml'
-
 const ChannelFields: {
   ymlField: string
   xmlField: string
@@ -71,16 +68,16 @@ const ChannelItemFields: {
   },
 ]
 
-function createFeed() {
+function createFeed(xmlFile: string, yamlFile: string) {
+  console.log(`Reading yaml file from ${yamlFile}`)
   const root = buildRootObject()
   const rss = buildRssObject(root)
-  const channel = buildChannelAttributes(rss)
+  const channel = buildChannelAttributes(rss, yamlFile)
   const xmlString = convertFeedToString(channel)
   writeXmlToFile(xmlString, xmlFile)
 }
 
 function convertFeedToString(root: XMLBuilder) {
-  //console.log(xmlString);
   return root.end({ prettyPrint: true })
 }
 
@@ -96,7 +93,7 @@ function buildRssObject(root: XMLBuilder) {
   })
 }
 
-function buildChannelAttributes(rss: XMLBuilder) {
+function buildChannelAttributes(rss: XMLBuilder, yamlFile: string) {
   const yamlContent = getYamlFileContents(yamlFile)
   const channel = rss.ele('channel')
   addChannelDescriptors(channel, yamlContent)
@@ -154,4 +151,5 @@ function isString(value: unknown): value is string {
   return typeof value === 'string'
 }
 
-createFeed()
+const [, , xmlFile, yamlFile] = process.argv
+createFeed(xmlFile, yamlFile)
