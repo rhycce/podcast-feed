@@ -25,8 +25,10 @@ jobs:
         run: yarn build
       - name: Check formatting
         run: yarn check-prettier
+      - name: List filepath
+        run: ls -als
       - name: Copy resource files over
-        run: cp src/resources/feed.yaml dist/resources
+        run: cp ./src/resources/feed.yaml dist/resources
       - name: Run Feed Generator
         run: node dist/feed
       - name: Push Repo
