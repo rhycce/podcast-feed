@@ -75,10 +75,6 @@ const ChannelItemFields:{
         xmlField: 'pubDate'
     },
     {
-        ymlField: 'author',
-        xmlField: 'itunes:author'
-    },
-    {
         ymlField: 'description',
         xmlField: 'description'
     }
@@ -143,21 +139,27 @@ function addChannelDescriptors(channel: XMLBuilder, yamlContent: Document.Parsed
 function addChannelItemDescriptors(channel: XMLBuilder, yamlContent: Document.Parsed){
     const fieldName:string = 'item'
     let index = 0;
+    const author = yamlContent.get('author')
     while(yamlContent.hasIn([fieldName, index])){
         // @ts-ignore
         const item:Document.Parsed = yamlContent.getIn([fieldName, index])
         const itemXml = channel.ele(fieldName)
         for(const itemField of ChannelItemFields){
             const value = item.get(itemField.ymlField)
-            itemXml.ele(itemField.xmlField).txt(<string>value)
+            if(isString(value))
+                itemXml.ele(itemField.xmlField).txt(<string>value)
         }
         const length = item.get('length')
         const file = item.get('file')
-        if(isString(length) && isString(file) )
+        const link = yamlContent.get('link')
+        if(isString(length) && isString(file) && isString(link))
         itemXml.ele('enclosure', {
             'length': length.replace(',', ''),
-            'url': file
+            'url': `${link}${file}`,
+            'type': 'audio/mpeg'
         })
+        if(isString(author))
+            itemXml.ele('itunes:author').txt(<string>author)
         index++;
     }
 }
