@@ -1,1 +1,25 @@
+name: Generate Podcast Feeds
+on: [push]
 
+jobs:
+  build:
+    name: Build code
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Prepare .npmrc
+        run: |
+          echo '@mergermarket:registry=https://npm.pkg.github.com' > .npmrc
+          echo '@ion-analytics:registry=https://npm.pkg.github.com' >> .npmrc
+          echo "//npm.pkg.github.com/:_authToken=${{secrets.IONA_GITHUB_PACKAGE_TOKEN}}" >> .npmrc
+      - name: Use Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version-file: '.nvmrc'
+          cache: 'yarn'
+      - name: Install dependencies
+        run: yarn install --frozen-lockfile
+        env:
+          NODE_AUTH_TOKEN: ${{secrets.IONA_GITHUB_PACKAGE_TOKEN}}
+      - name: Build
+        run: yarn build
