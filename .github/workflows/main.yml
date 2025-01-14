@@ -9,3 +9,6 @@ jobs:
       - uses: actions/checkout@v4
       - name: Run feed generator
         uses: rhycce/podcast-generator@main
+        with:
+          xmlFile: feed.xml
+          ymlFile: src/resources/feed.yaml
