@@ -12,3 +12,10 @@ jobs:
         with:
           xmlFile: feed.xml
           ymlFile: src/resources/feed.yaml
+      - name: Push File To Repo
+        run: |
+          git config user.name github-actions
+          git config user.email github-actions@github.com
+          git add feed.xml
+          git commit -m "Modified Feed"
+          git push
