@@ -50,5 +50,13 @@
       <enclosure length="352587" url="https://rhycce.github.io/podcast-feed/audio/TFIT05.mp3" type="audio/mpeg"/>
       <itunes:author>Ray Villalobos</itunes:author>
     </item>
+    <item>
+      <title>EP06-Crafting an AI Strategy For Your Business2</title>
+      <itunes:duration>00:00:22</itunes:duration>
+      <pubDate>Thu, 10 Feb 2023 18:00:00 GMT</pubDate>
+      <description>Andreas Welsch joins this discussion to share insights on crafting an AI strategy for businesses that considers evolving technology, ethics, and legal implications, drawing from his extensive experience in managing stakeholder relationships and leading AI projects across Fortune 500 companies.</description>
+      <enclosure length="352587" url="https://rhycce.github.io/podcast-feed/audio/TFIT05.mp3" type="audio/mpeg"/>
+      <itunes:author>Ray Villalobos</itunes:author>
+    </item>
   </channel>
 </rss>
