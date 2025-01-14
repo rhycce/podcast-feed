@@ -12,6 +12,8 @@ jobs:
         with:
           xmlFile: feed.xml
           ymlFile: src/resources/feed.yaml
+      - name: List current files
+        run: ls -als
       - name: Push File To Repo
         run: |
           git config user.name github-actions
