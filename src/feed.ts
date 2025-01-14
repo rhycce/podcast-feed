@@ -69,7 +69,7 @@ const ChannelItemFields: {
 ]
 
 function createFeed(xmlFile: string, yamlFile: string) {
-  console.log(`Reading yaml file from ${yamlFile}`)
+  console.log(`Reading yaml file from ${yamlFile} `)
   const root = buildRootObject()
   const rss = buildRssObject(root)
   const channel = buildChannelAttributes(rss, yamlFile)
